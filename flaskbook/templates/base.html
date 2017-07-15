@@ -26,18 +26,27 @@
 </div>
 
 <div class="body">
-    <div class="main_panel horizontal">
+    <div class="main_panel">
 
-        <div class="menu">
-            <ul>
-                {% for item in page.menu_items %}
-                <li><a class="button" href="{{ item.href }}">{{ item.name }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
+        <ul class="flashed_messages">
+            {% for message in get_flashed_messages() %}
+            <li onclick="javascript:this.style.display = 'none';">{{ message }}</li>
+            {% endfor %}
+        </ul>
 
-        <div class="content">
-            {% block content %}{% endblock %}
+        <div class="horizontal">
+
+            <div class="menu">
+                <ul>
+                    {% for item in page.menu_items %}
+                    <li><a class="button" href="{{ item.href }}">{{ item.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="content">
+                {% block content %}{% endblock %}
+            </div>
         </div>
     </div>
 </div>
