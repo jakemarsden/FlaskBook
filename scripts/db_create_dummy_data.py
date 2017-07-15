@@ -26,11 +26,17 @@ def _create_dummy_story(template: dict) -> Story:
     return story
 
 
-def _lorem_ipsum(paras: int) -> str:
+def _lorem_ipsum(paras: int, as_html: bool = True) -> str:
     url = 'https://www.baconipsum.com/api/?paras=%i&format=%s&type=%s&start-with-lorem=%i'
     url = url % (paras, 'text', 'meat-and-filler', 1)
     response = requests.get(url)
-    return response.text if (response.status_code == 200) else None
+    if response.status_code == 200:
+        text = response.text
+        if as_html:
+            text = text.replace('\n\n', '<p></p>')
+            text = text.replace('\n', '<br>')
+        return text
+    return None
 
 
 _dummy_users = [User(nickname='Test 1'),
@@ -77,7 +83,7 @@ _stories = [{
     'title': 'This test story has a very long title and some very long flavour text and was written by an author with '
              'a very long nickname and is part of a category which has a very long name in order to allow for more '
              'thorough dev testing',
-    'flavour': _lorem_ipsum(1),
+    'flavour': _lorem_ipsum(1, as_html=False),
     'fulltext': _lorem_ipsum(20),
     'author': _dummy_users[3],
     'category': _dummy_categories[3]
