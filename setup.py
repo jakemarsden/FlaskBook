@@ -7,6 +7,7 @@ setup(
     install_requires=[
         'flask',
         'flask-sqlalchemy',
+        'requests',
         'sqlalchemy-migrate'
     ]
 )

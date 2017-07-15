@@ -5,3 +5,6 @@ app = Flask(__name__)
 app.config.from_object('config')
 
 db = SQLAlchemy(app)
+
+# noinspection PyUnresolvedReferences
+from flaskbook.orm import models
