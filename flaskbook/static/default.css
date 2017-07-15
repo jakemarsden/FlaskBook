@@ -1,0 +1,52 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline-width: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Verdana;
+    font-size: 76%;
+    line-height: 24px;
+    color: #444;
+}
+
+a {
+    text-decoration: underline;
+    color: #444;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #222;
+}
+
+a.button {
+    display: block;
+    padding: 4px 6px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    text-decoration: none;
+    color: #444;
+}
+
+a.button:hover {
+    border-color: #444;
+    background-color: #444;
+    color: #fff;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.horizontal::after {
+    display: table;
+    clear: both;
+    content: "";
+}
+
+.horizontal > * {
+    float: left;
+}

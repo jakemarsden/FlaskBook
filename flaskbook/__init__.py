@@ -8,3 +8,5 @@ db = SQLAlchemy(app)
 
 # noinspection PyUnresolvedReferences
 from flaskbook.orm import models
+# noinspection PyUnresolvedReferences
+from flaskbook.ui import views
