@@ -1,4 +1,7 @@
 import os
+
+from sqlalchemy_imageattach.stores.fs import HttpExposedFileSystemStore
+
 import config_secret
 
 DIR_BASE = os.path.abspath(os.path.dirname(__file__))
@@ -14,6 +17,11 @@ SECRET_KEY = config_secret.SECRET_KEY
 SQLALCHEMY_DATABASE_URI = 'sqlite:///%s/%s' % (DIR_STORAGE, 'app.db')
 SQLALCHEMY_MIGRATE_REPO = os.path.join(DIR_STORAGE, 'db_repository')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+SQLALCHEMY_IMAGE_STORE = HttpExposedFileSystemStore(
+    path=os.path.join(DIR_STORAGE, 'images'),
+    prefix='static/images'
+)
 
 if not os.path.exists(DIR_STORAGE):
     os.makedirs(DIR_STORAGE)
