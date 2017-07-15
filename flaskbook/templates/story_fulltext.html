@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}{{ story.title }}{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/static/stories.css"/>
+{% endblock %}
+
+{% block content %}
+<div id="story-{{ story.id }}" class="story fulltext">
+
+    <div class="title">
+        {% if story.title is not none %}
+        <h1>{{ story.title }}</h1>
+        {% else %}
+        <h1><em>No Title</em></h1>
+        {% endif %}
+    </div>
+
+    <div class="horizontal">
+        <div class="author">
+            {% if story.author is not none %}
+            by <a href="/user/{{ story.author.id }}">{{ story.author.nickname }}</a>
+            {% else %}
+            by <em>Unknown</em>
+            {% endif %}
+        </div>
+
+        <div class="category">
+            {% if story.category is not none %}
+            Category: <a href="/category/{{ story.category.id }}">{{ story.category.name }}</a>
+            {% else %}
+            Category: <em>None</em>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="flavour">
+        {% if story.flavour_text is not none %}
+        <em>{{ story.flavour_text }}</em>
+        {% endif %}
+    </div>
+
+    <div class="fulltext">
+        {% if story.fulltext_html is not none %}
+        {{ story.fulltext_html|safe }}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

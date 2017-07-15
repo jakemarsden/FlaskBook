@@ -1,0 +1,9 @@
+.story.fulltext .author {
+    margin-left: 5px;
+    float: right;
+}
+
+.story.fulltext .flavour {
+    min-height: 24px;
+    padding: 10px 40px;
+}

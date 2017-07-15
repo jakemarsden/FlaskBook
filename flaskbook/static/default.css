@@ -12,6 +12,12 @@ body {
     color: #444;
 }
 
+h1 {
+    border-bottom: 2px solid #e60022;
+    font-family: Arial;
+    font-size: 200%;
+}
+
 a {
     text-decoration: underline;
     color: #444;
