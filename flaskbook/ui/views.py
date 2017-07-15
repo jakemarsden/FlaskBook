@@ -11,6 +11,14 @@ def get_index():
     return render('index.html', Page())
 
 
+@app.route('/stories')
+def get_stories():
+    stories = (Story.query
+               .order_by(collate(Story.title, 'NOCASE'))
+               .all())
+    return render('story_list.html', _stories_page(), stories=stories)
+
+
 @app.route('/stories/<int:story_id>')
 def get_story_by_id(story_id: int):
     story = (Story.query

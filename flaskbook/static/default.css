@@ -18,6 +18,12 @@ h1 {
     font-size: 200%;
 }
 
+h2 {
+    border-bottom: 2px solid #e60022;
+    font-family: Trebuchet MS;
+    font-size: 150%;
+}
+
 a {
     text-decoration: underline;
     color: #444;
@@ -55,4 +61,27 @@ ul {
 
 .horizontal > * {
     float: left;
+}
+
+/*
+ * The first child anchor will grow to cover its parent, effectively making the parent one huge link. Note that we
+ * ensure child links will still work as expected because we bring them back to the front. Nesting ".big_link" elements
+ * is not supported.
+ */
+.big_link {
+    position: relative;
+}
+
+.big_link a {
+    position: relative;
+    z-index: 101;
+}
+
+.big_link > a:first-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
 }

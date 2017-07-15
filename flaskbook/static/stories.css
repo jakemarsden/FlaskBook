@@ -1,3 +1,15 @@
+.story.preview {
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 2px;
+    background-color: rgba(230, 0, 34, 0.05);
+}
+
+.story.preview:hover {
+    background-color: rgba(230, 0, 34, 0.1);
+}
+
+.story.preview .author,
 .story.fulltext .author {
     margin-left: 5px;
     float: right;
