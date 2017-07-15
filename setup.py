@@ -4,5 +4,7 @@ setup(
     name='FlaskBook',
     packages=['flaskbook'],
     include_package_data=True,
-    install_requires=[]
+    install_requires=[
+        'flask'
+    ]
 )
