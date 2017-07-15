@@ -32,3 +32,18 @@
     width: 800px;
     padding: 20px;
 }
+
+.flashed_messages li {
+    margin: 5px 0;
+    padding: 0 10px;
+    border-radius: 5px;
+    border: 1px solid rgba(230, 81, 0, 1.0);
+    background-color: rgba(230, 81, 0, 0.15);
+    color: rgba(230, 81, 0, 1.0);
+    font-weight: bold;
+}
+
+.flashed_messages li:hover {
+    background-color: rgba(230, 81, 0, 0.3);
+    cursor: pointer;
+}

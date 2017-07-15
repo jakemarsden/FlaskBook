@@ -1,3 +1,4 @@
+from flask import flash, redirect
 from sqlalchemy.sql import collate
 
 from flaskbook import app
@@ -16,6 +17,8 @@ def get_stories():
     stories = (Story.query
                .order_by(collate(Story.title, 'NOCASE'))
                .all())
+    if len(stories) == 0:
+        flash('No stories found')
     return render('story_list.html', _stories_page(), stories=stories)
 
 
@@ -25,9 +28,9 @@ def get_story_by_id(story_id: int):
              .filter(Story.id == story_id)
              .one_or_none())
     if story is None:
-        raise RuntimeError
-    else:
-        return render('story_fulltext.html', _stories_page(), story=story)
+        flash('No story found with the specified ID: %i' % story_id)
+        return redirect('/stories')
+    return render('story_fulltext.html', _stories_page(), story=story)
 
 
 def _stories_page():
