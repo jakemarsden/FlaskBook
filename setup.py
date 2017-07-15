@@ -5,6 +5,8 @@ setup(
     packages=['flaskbook'],
     include_package_data=True,
     install_requires=[
-        'flask'
+        'flask',
+        'flask-sqlalchemy',
+        'sqlalchemy-migrate'
     ]
 )

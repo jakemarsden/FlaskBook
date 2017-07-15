@@ -1,3 +1,10 @@
+# Application specific
+
+/storage/
+
+
+
+
 # Created by https://www.gitignore.io/api/git,linux,python,pycharm,windows
 
 ### Git ###
