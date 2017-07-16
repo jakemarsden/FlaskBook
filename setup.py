@@ -7,7 +7,7 @@ setup(
     install_requires=[
         'flask',
         'flask-sqlalchemy',
-        'requests',
+        'lorem',
         'SQLAlchemy-ImageAttach',
         'sqlalchemy-migrate'
     ]
