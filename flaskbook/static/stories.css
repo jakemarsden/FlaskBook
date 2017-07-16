@@ -50,7 +50,19 @@
     border-radius: 4px;
 }
 
+.story .flavour {
+    text-align: justify;
+}
+
 .story.fulltext .flavour {
     min-height: 24px;
     padding: 10px 40px;
+}
+
+.story.fulltext .fulltext {
+    text-align: justify;
+}
+
+.story.fulltext .fulltext p {
+    margin-bottom: 5px;
 }
