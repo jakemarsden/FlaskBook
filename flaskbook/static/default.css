@@ -53,6 +53,7 @@ ul {
     list-style-type: none;
 }
 
+.clearfix::after,
 .horizontal::after {
     display: table;
     clear: both;

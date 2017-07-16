@@ -16,22 +16,20 @@
         {% endif %}
     </div>
 
-    <div class="horizontal">
-        <div class="author">
-            {% if story.author is not none %}
-            by <a href="/user/{{ story.author.id }}">{{ story.author.nickname }}</a>
-            {% else %}
-            by <em>Unknown</em>
-            {% endif %}
-        </div>
+    <div class="author">
+        {% if story.author is not none %}
+        {% with user = story.author %}
+        {% include "_user_avatar.html" %}
+        {% endwith %}
+        {% endif %}
+    </div>
 
-        <div class="category">
-            {% if story.category is not none %}
-            Category: <a href="/category/{{ story.category.id }}">{{ story.category.name }}</a>
-            {% else %}
-            Category: <em>None</em>
-            {% endif %}
-        </div>
+    <div class="category">
+        {% if story.category is not none %}
+        Category: <a href="/category/{{ story.category.id }}">{{ story.category.name }}</a>
+        {% else %}
+        Category: <em>None</em>
+        {% endif %}
     </div>
 
     <div class="flavour">
