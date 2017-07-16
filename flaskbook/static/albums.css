@@ -1,0 +1,34 @@
+.album.fulltext .author {
+    max-width: 120px;
+    margin: 10px;
+    margin-right: 0;
+    float: right;
+    text-align: right;
+    line-height: normal;
+}
+
+.album.fulltext .author img {
+    width: 120px;
+    height: 120px;
+    border-radius: 4px;
+}
+
+.album.fulltext .entries li {
+    position: relative;
+    width: 220px;
+    height: 200px;
+    margin: 10px;
+    border: 2px solid #e60022;
+    border-radius: 2px;
+}
+
+.album.fulltext .entries img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+    margin: auto;
+}
