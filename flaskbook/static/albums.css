@@ -1,0 +1,81 @@
+.album.preview {
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 2px;
+    background-color: rgba(230, 0, 34, 0.05);
+}
+
+.album.preview:hover {
+    background-color: rgba(230, 0, 34, 0.1);
+}
+
+.album.preview .thumb {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 5px;
+    float: left;
+}
+
+.album.preview .thumb img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+    margin: auto;
+    border: 1px solid #e60022;
+    border-radius: 2px;
+}
+
+.album .author {
+    float: right;
+    text-align: right;
+    line-height: normal;
+}
+
+.album.preview .author {
+    max-width: 120px;
+    margin: 5px;
+    margin-top: 8px;
+}
+
+.album.fulltext .author {
+    max-width: 120px;
+    margin: 10px;
+    margin-right: 0;
+}
+
+.album.preview .author img {
+    width: 60px;
+    height: 60px;
+    border-radius: 2px;
+}
+
+.album.fulltext .author img {
+    width: 120px;
+    height: 120px;
+    border-radius: 4px;
+}
+
+.album.fulltext .entries li {
+    position: relative;
+    width: 220px;
+    height: 200px;
+    margin: 10px;
+    border: 2px solid #e60022;
+    border-radius: 2px;
+}
+
+.album.fulltext .entries img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+    margin: auto;
+}

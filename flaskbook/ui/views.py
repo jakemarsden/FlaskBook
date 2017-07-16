@@ -2,7 +2,7 @@ from flask import flash, redirect
 from sqlalchemy.sql import collate
 
 from flaskbook import app
-from flaskbook.orm.models import Category, Story
+from flaskbook.orm.models import Album, Category, Story
 from flaskbook.ui.ui import MenuItem, Page, render
 
 
@@ -12,6 +12,27 @@ def get_index():
     return render('index.html', Page())
 
 
+@app.route('/albums')
+def get_albums():
+    albums = (Album.query
+              .order_by(collate(Album.title, 'NOCASE'))
+              .all())
+    if len(albums) == 0:
+        flash('No albums found')
+    return render('album_list.html', _page(), albums=albums)
+
+
+@app.route('/albums/<int:album_id>')
+def get_album_by_id(album_id: int):
+    album = (Album.query
+             .filter(Album.id == album_id)
+             .one_or_none())
+    if album is None:
+        flash('No album found with the specified ID: %i' % album_id)
+        return redirect('/albums')
+    return render('album_fulltext.html', _page(), album=album)
+
+
 @app.route('/stories')
 def get_stories():
     stories = (Story.query
@@ -19,7 +40,7 @@ def get_stories():
                .all())
     if len(stories) == 0:
         flash('No stories found')
-    return render('story_list.html', _stories_page(), stories=stories)
+    return render('story_list.html', _page(), stories=stories)
 
 
 @app.route('/stories/<int:story_id>')
@@ -30,10 +51,10 @@ def get_story_by_id(story_id: int):
     if story is None:
         flash('No story found with the specified ID: %i' % story_id)
         return redirect('/stories')
-    return render('story_fulltext.html', _stories_page(), story=story)
+    return render('story_fulltext.html', _page(), story=story)
 
 
-def _stories_page():
+def _page():
     categories = (Category.query
                   .order_by(collate(Category.name, 'NOCASE'))
                   .all())

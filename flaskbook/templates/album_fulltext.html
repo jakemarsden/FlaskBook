@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}{{ album.title }}{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/static/albums.css"/>
+{% endblock %}
+
+{% block content %}
+<div id="album-{{ album.id }}" class="album fulltext">
+
+    <div class="title">
+        {% if album.title is not none %}
+        <h1>{{ album.title }}</h1>
+        {% else %}
+        <h1><em>No Title</em></h1>
+        {% endif %}
+    </div>
+
+    <div class="clearfix">
+
+        <div class="author">
+            {% if album.author is not none %}
+            {% with user = album.author %}
+            {% include "_user_avatar.html" %}
+            {% endwith %}
+            {% endif %}
+        </div>
+
+        <div class="category">
+            {% if album.category is not none %}
+            Category: <a href="/category/{{ album.category.id }}">{{ album.category.name }}</a>
+            {% else %}
+            Category: <em>None</em>
+            {% endif %}
+        </div>
+    </div>
+
+    <ul class="entries horizontal">
+        {% for entry in album.entries %}
+        <li>
+            {% if entry.image_url is not none %}
+            <img src="{{ entry.image_url }}"/>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
