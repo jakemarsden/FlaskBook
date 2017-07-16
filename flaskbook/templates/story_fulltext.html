@@ -8,6 +8,12 @@
 {% block content %}
 <div id="story-{{ story.id }}" class="story fulltext">
 
+    <div class="cover">
+        {% if story.cover_url is not none %}
+        <img src="{{ story.cover_url }}"/>
+        {% endif %}
+    </div>
+
     <div class="title">
         {% if story.title is not none %}
         <h1>{{ story.title }}</h1>
