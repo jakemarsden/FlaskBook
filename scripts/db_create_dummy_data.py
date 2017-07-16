@@ -125,16 +125,42 @@ _albums = [{
     'title': 'Test Album 1',
     'author': _dummy_users[0],
     'category': _dummy_categories[0],
-    'entries': [{
-        'caption': 'Test 1',
-        'image': 'https://upload.wikimedia.org/wikipedia/en/7/7d/Bliss.png'
-    }, {
-        'caption': 'Test 2',
-        'image': None
-    }, {
-        'caption': 'Test 3',
-        'image': None
-    }]
+    'entries': [{'caption': 'Test 1', 'image': 'https://upload.wikimedia.org/wikipedia/en/7/7d/Bliss.png'},
+                {'caption': 'Test 2', 'image': None},
+                {'caption': 'Test 3', 'image': None}]
+}, {
+    'title': 'Mostly Empty',
+    'author': None,
+    'category': None,
+    'entries': []
+}, {
+    'title': None,
+    'author': None,
+    'category': None,
+    'entries': []
+}, {
+    'title': 'This test album has a very long title and contains lots of images with very long captions and was '
+             'written by an author with a very long nickname and is part of a category which has a very long name in '
+             'order to allow for more thorough dev testing',
+    'author': _dummy_users[3],
+    'category': _dummy_categories[3],
+    'entries': [{'caption': _lorem_ipsum(1, as_html=False),
+                 'image': 'https://upload.wikimedia.org/wikipedia/en/7/7d/Bliss.png'},
+                {'caption': _lorem_ipsum(1, as_html=False), 'image': None},
+                {'caption': None, 'image': None},
+                {'caption': _lorem_ipsum(1, as_html=False), 'image': None},
+                {'caption': None, 'image': None},
+                {'caption': None, 'image': None},
+                {'caption': None, 'image': None},
+                {'caption': None, 'image': None},
+                {'caption': None, 'image': None},
+                {'caption': None, 'image': None},
+                {'caption': None, 'image': None},
+                {'caption': None, 'image': None},
+                {'caption': None, 'image': None},
+                {'caption': None, 'image': None},
+                {'caption': None, 'image': None},
+                {'caption': None, 'image': None}]
 }]
 _dummy_albums = [_create_dummy_album(album) for album in _albums]
 
