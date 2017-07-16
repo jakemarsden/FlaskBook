@@ -37,6 +37,19 @@ class Album(db.Model):
     category = db.relationship('Category', back_populates='albums')
     entries = db.relationship('AlbumEntry', back_populates='album', order_by='AlbumEntry.order')
 
+    @property
+    def first_entry(self) -> Optional['AlbumEntry']:
+        if len(self.entries) != 0:
+            return self.entries[0]
+        return None
+
+    @property
+    def first_entry_url(self) -> Optional[str]:
+        entry = self.first_entry
+        if entry is not None:
+            return entry.image_url
+        return None
+
     def __repr__(self):
         return '<Album: %r>' % self.title
 

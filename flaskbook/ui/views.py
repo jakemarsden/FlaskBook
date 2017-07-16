@@ -12,6 +12,16 @@ def get_index():
     return render('index.html', Page())
 
 
+@app.route('/albums')
+def get_albums():
+    albums = (Album.query
+              .order_by(collate(Album.title, 'NOCASE'))
+              .all())
+    if len(albums) == 0:
+        flash('No albums found')
+    return render('album_list.html', _page(), albums=albums)
+
+
 @app.route('/albums/<int:album_id>')
 def get_album_by_id(album_id: int):
     album = (Album.query

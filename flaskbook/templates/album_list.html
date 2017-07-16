@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Albums{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/static/albums.css"/>
+{% endblock %}
+
+{% block content %}
+<ul class="albums">
+    {% for album in albums %}
+    <li id="album-{{ album.id }}" class="album preview big_link clearfix">
+
+        <a href="/albums/{{ album.id }}"></a>
+
+        <div class="thumb">
+            {% if album.first_entry_url is not none %}
+            <img src="{{ album.first_entry_url }}"/>
+            {% endif %}
+        </div>
+
+        <div class="author">
+            {% if album.author is not none %}
+            {% with user = album.author %}
+            {% include "_user_avatar.html" %}
+            {% endwith %}
+            {% endif %}
+        </div>
+
+        <div class="title">
+            {% if album.title is not none %}
+            <h2>{{ album.title }}</h2>
+            {% else %}
+            <h2><em>No Title</em></h2>
+            {% endif %}
+        </div>
+
+        <div class="category">
+            {% if album.category is not none %}
+            Category: <a href="/category/{{ album.category.id }}">{{ album.category.name }}</a>
+            {% else %}
+            Category: <em>None</em>
+            {% endif %}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
