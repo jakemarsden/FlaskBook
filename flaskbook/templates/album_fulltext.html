@@ -35,12 +35,22 @@
         </div>
     </div>
 
-    <ul class="entries horizontal">
+    <ul class="horizontal">
+        <!-- TODO: fix the grid -->
         {% for entry in album.entries %}
-        <li>
-            {% if entry.image_url is not none %}
-            <img src="{{ entry.image_url }}"/>
-            {% endif %}
+        <li class="entry">
+
+            <div class="image_container">
+                {% if entry.image_url is not none %}
+                <img src="{{ entry.image_url }}"/>
+                {% endif %}
+            </div>
+
+            <div class="caption">
+                {% if entry.caption is not none %}
+                {{ entry.caption }}
+                {% endif %}
+            </div>
         </li>
         {% endfor %}
     </ul>

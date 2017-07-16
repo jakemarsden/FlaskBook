@@ -60,16 +60,20 @@
     border-radius: 4px;
 }
 
-.album.fulltext .entries li {
+.album.fulltext .entry {
+    width: 220px;
+    margin: 10px;
+}
+
+.album.fulltext .entry .image_container {
     position: relative;
     width: 220px;
-    height: 200px;
-    margin: 10px;
+    height: 220px;
     border: 2px solid #e60022;
     border-radius: 2px;
 }
 
-.album.fulltext .entries img {
+.album.fulltext .entry img {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -78,4 +82,9 @@
     width: 100%;
     height: auto;
     margin: auto;
+}
+
+.album.fulltext .entry .caption {
+    text-align: justify;
+    line-height: normal;
 }
