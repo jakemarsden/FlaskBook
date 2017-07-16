@@ -1,6 +1,9 @@
-from sqlalchemy_imageattach import entity
+from typing import Optional
 
-from flaskbook import db
+from sqlalchemy_imageattach import entity
+from sqlalchemy_imageattach.context import store_context
+
+from flaskbook import db, image_store
 
 
 class User(db.Model):
@@ -9,6 +12,15 @@ class User(db.Model):
 
     avatar = entity.image_attachment('UserAvatar')
     stories = db.relationship('Story', back_populates='author')
+
+    @property
+    def avatar_url(self) -> Optional[str]:
+        with store_context(image_store):
+            try:
+                return self.avatar.locate()
+            except IOError:
+                pass
+        return None
 
     def __repr__(self):
         return '<User: %r>' % self.nickname
@@ -25,6 +37,15 @@ class Story(db.Model):
     cover = entity.image_attachment('StoryCover')
     author = db.relationship('User', back_populates='stories')
     category = db.relationship('Category', back_populates='stories')
+
+    @property
+    def cover_url(self) -> Optional[str]:
+        with store_context(image_store):
+            try:
+                return self.cover.locate()
+            except IOError:
+                pass
+        return None
 
     def __repr__(self):
         return '<Story: %r>' % self.title
