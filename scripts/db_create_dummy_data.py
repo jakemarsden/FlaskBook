@@ -5,10 +5,13 @@ import requests
 from sqlalchemy_imageattach.context import store_context
 
 from flaskbook import db, image_store
-from flaskbook.orm.models import Category, User, UserAvatar, Story, StoryCover
+from flaskbook.orm.models import Album, AlbumEntry, AlbumImage, Category, User, UserAvatar, Story, StoryCover
 
 
 def _drop_all_data():
+    Album.query.delete()
+    AlbumEntry.query.delete()
+    AlbumImage.query.delete()
     Category.query.delete()
     User.query.delete()
     UserAvatar.query.delete()
@@ -37,6 +40,26 @@ def _create_dummy_user(template: dict) -> User:
         db.session.add(user)
         db.session.commit()
     return user
+
+
+def _create_dummy_album(template: dict) -> Album:
+    album = Album()
+    album.title = template['title']
+    album.author = template['author']
+    album.category = template['category']
+    with store_context(image_store):
+        for idx, entry_template in enumerate(template['entries']):
+            entry = AlbumEntry()
+            entry.order = (idx + 1)
+            entry.caption = entry_template['caption']
+            if entry_template['image'] is not None:
+                response = _request(entry_template['image'])
+                if response is not None:
+                    entry.image.from_blob(response.content)
+            album.entries.append(entry)
+        db.session.add(album)
+        db.session.commit()
+    return album
 
 
 def _create_dummy_story(template: dict) -> Story:
@@ -97,6 +120,23 @@ _users = [{
     'avatar': 'http://www.gravatar.com/avatar/?d=mm'
 }]
 _dummy_users = [_create_dummy_user(user) for user in _users]
+
+_albums = [{
+    'title': 'Test Album 1',
+    'author': _dummy_users[0],
+    'category': _dummy_categories[0],
+    'entries': [{
+        'caption': 'Test 1',
+        'image': 'https://upload.wikimedia.org/wikipedia/en/7/7d/Bliss.png'
+    }, {
+        'caption': 'Test 2',
+        'image': None
+    }, {
+        'caption': 'Test 3',
+        'image': None
+    }]
+}]
+_dummy_albums = [_create_dummy_album(album) for album in _albums]
 
 _stories = [{
     'title': 'Test Story 1',
