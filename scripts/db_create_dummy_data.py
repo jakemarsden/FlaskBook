@@ -4,8 +4,7 @@ from typing import Optional
 import requests
 from sqlalchemy_imageattach.context import store_context
 
-from config import SQLALCHEMY_IMAGE_STORE as image_store
-from flaskbook import db
+from flaskbook import db, image_store
 from flaskbook.orm.models import Category, User, UserAvatar, Story, StoryCover
 
 
