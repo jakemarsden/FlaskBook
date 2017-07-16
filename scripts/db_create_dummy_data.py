@@ -4,16 +4,28 @@ import requests
 from flaskbook.orm.models import *
 
 
-def _go():
+def _drop_all_data():
     User.query.delete()
     Story.query.delete()
     Category.query.delete()
     db.session.commit()
     print('Dropped all rows from the database')
 
-    db.session.add_all(_dummy_stories)
+
+def _create_dummy_category(template: dict) -> Category:
+    category = Category()
+    category.name = template['name']
+    db.session.add(category)
     db.session.commit()
-    print('Added %i dummy stories to the database' % len(_dummy_stories))
+    return category
+
+
+def _create_dummy_user(template: dict) -> User:
+    user = User()
+    user.nickname = template['name']
+    db.session.add(user)
+    db.session.commit()
+    return user
 
 
 def _create_dummy_story(template: dict) -> Story:
@@ -23,12 +35,15 @@ def _create_dummy_story(template: dict) -> Story:
     story.fulltext_html = template['fulltext']
     story.author = template['author']
     story.category = template['category']
+    db.session.add(story)
+    db.session.commit()
     return story
 
 
 def _lorem_ipsum(paras: int, as_html: bool = True) -> str:
     url = 'https://www.baconipsum.com/api/?paras=%i&format=%s&type=%s&start-with-lorem=%i'
     url = url % (paras, 'text', 'meat-and-filler', 1)
+    print('Requesting: %s' % url)
     response = requests.get(url)
     if response.status_code == 200:
         text = response.text
@@ -39,15 +54,19 @@ def _lorem_ipsum(paras: int, as_html: bool = True) -> str:
     return None
 
 
-_dummy_users = [User(nickname='Test 1'),
-                User(nickname='Test 2'),
-                User(nickname='Test 3'),
-                User(nickname='This test user has an extra long name for testing purposes')]
+_drop_all_data()
 
-_dummy_categories = [Category(name='Test 1'),
-                     Category(name='Test 2'),
-                     Category(name='Test 3'),
-                     Category(name='This test category has an extra long name for testing purposes')]
+_categories = [{'name': 'Test 1'},
+               {'name': 'Test 2'},
+               {'name': 'Test 3'},
+               {'name': 'This test category has an extra long name for testing purposes'}]
+_dummy_categories = [_create_dummy_category(category) for category in _categories]
+
+_users = [{'name': 'Test 1'},
+          {'name': 'Test 2'},
+          {'name': 'Test 3'},
+          {'name': 'This test user has an extra long name for testing purposes'}]
+_dummy_users = [_create_dummy_user(user) for user in _users]
 
 _stories = [{
     'title': 'Test Story 1',
@@ -88,7 +107,4 @@ _stories = [{
     'author': _dummy_users[3],
     'category': _dummy_categories[3]
 }]
-
 _dummy_stories = [_create_dummy_story(story) for story in _stories]
-
-_go()
