@@ -1,0 +1,11 @@
+<a href="/user/{{ user.id }}">
+    {% if user.avatar_url is not none %}
+    <img src="{{ user.avatar_url }}"/>
+    {% else %}
+    <img src="/static/default_avatar.png"/>
+    {% endif %}
+</a>
+
+<div>
+    <a href="/user/{{ user.id }}">{{ user.nickname }}</a>
+</div>

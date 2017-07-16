@@ -9,10 +9,45 @@
     background-color: rgba(230, 0, 34, 0.1);
 }
 
-.story.preview .author,
-.story.fulltext .author {
-    margin-left: 5px;
+.story.fulltext .cover {
+    text-align: center;
+}
+
+.story.fulltext .cover img {
+    width: auto;
+    max-width: 700px;
+    height: auto;
+    max-height: 300px;
+}
+
+.story .author {
     float: right;
+    text-align: right;
+    line-height: normal;
+}
+
+.story.preview .author {
+    max-width: 120px;
+    margin: 5px;
+    margin-top: 8px;
+}
+
+.story.fulltext .author {
+    max-width: 120px;
+    margin: 10px;
+    margin-right: 0;
+}
+
+.story.preview .author img {
+    width: 60px;
+    height: 60px;
+    border-radius: 2px;
+}
+
+.story.fulltext .author img {
+    width: 120px;
+    height: 120px;
+    border-radius: 4px;
 }
 
 .story.fulltext .flavour {

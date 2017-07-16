@@ -1,19 +1,42 @@
 #!venv/bin/python
+from typing import Optional
+
 import requests
+from sqlalchemy_imageattach.context import store_context
 
-from flaskbook.orm.models import *
+from flaskbook import db, image_store
+from flaskbook.orm.models import Category, User, UserAvatar, Story, StoryCover
 
 
-def _go():
-    User.query.delete()
-    Story.query.delete()
+def _drop_all_data():
     Category.query.delete()
+    User.query.delete()
+    UserAvatar.query.delete()
+    Story.query.delete()
+    StoryCover.query.delete()
     db.session.commit()
     print('Dropped all rows from the database')
 
-    db.session.add_all(_dummy_stories)
+
+def _create_dummy_category(template: dict) -> Category:
+    category = Category()
+    category.name = template['name']
+    db.session.add(category)
     db.session.commit()
-    print('Added %i dummy stories to the database' % len(_dummy_stories))
+    return category
+
+
+def _create_dummy_user(template: dict) -> User:
+    user = User()
+    user.nickname = template['name']
+    with store_context(image_store):
+        if template['avatar'] is not None:
+            response = _request(template['avatar'])
+            if response is not None:
+                user.avatar.from_blob(response.content)
+        db.session.add(user)
+        db.session.commit()
+    return user
 
 
 def _create_dummy_story(template: dict) -> Story:
@@ -23,14 +46,21 @@ def _create_dummy_story(template: dict) -> Story:
     story.fulltext_html = template['fulltext']
     story.author = template['author']
     story.category = template['category']
+    with store_context(image_store):
+        if template['cover'] is not None:
+            response = _request(template['cover'])
+            if response is not None:
+                story.cover.from_blob(response.content)
+        db.session.add(story)
+        db.session.commit()
     return story
 
 
-def _lorem_ipsum(paras: int, as_html: bool = True) -> str:
+def _lorem_ipsum(paras: int, as_html: bool = True) -> Optional[str]:
     url = 'https://www.baconipsum.com/api/?paras=%i&format=%s&type=%s&start-with-lorem=%i'
     url = url % (paras, 'text', 'meat-and-filler', 1)
-    response = requests.get(url)
-    if response.status_code == 200:
+    response = _request(url)
+    if response is not None:
         text = response.text
         if as_html:
             text = text.replace('\n\n', '<p></p>')
@@ -39,46 +69,70 @@ def _lorem_ipsum(paras: int, as_html: bool = True) -> str:
     return None
 
 
-_dummy_users = [User(nickname='Test 1'),
-                User(nickname='Test 2'),
-                User(nickname='Test 3'),
-                User(nickname='This test user has an extra long name for testing purposes')]
+def _request(url: str) -> Optional[requests.Response]:
+    print('Requesting: %s' % url)
+    response = requests.get(url)
+    return response if (response.status_code == 200) else None
 
-_dummy_categories = [Category(name='Test 1'),
-                     Category(name='Test 2'),
-                     Category(name='Test 3'),
-                     Category(name='This test category has an extra long name for testing purposes')]
+
+_drop_all_data()
+
+_categories = [{'name': 'Test 1'},
+               {'name': 'Test 2'},
+               {'name': 'Test 3'},
+               {'name': 'This test category has an extra long name for testing purposes'}]
+_dummy_categories = [_create_dummy_category(category) for category in _categories]
+
+_users = [{
+    'name': 'Test 1',
+    'avatar': None
+}, {
+    'name': 'Test 2',
+    'avatar': None
+}, {
+    'name': 'Test 3',
+    'avatar': None
+}, {
+    'name': 'This test user has an extra long name for testing purposes',
+    'avatar': 'http://www.gravatar.com/avatar/?d=mm'
+}]
+_dummy_users = [_create_dummy_user(user) for user in _users]
 
 _stories = [{
     'title': 'Test Story 1',
     'flavour': 'This test story is vanilla flavoured.',
     'fulltext': _lorem_ipsum(3),
     'author': _dummy_users[0],
-    'category': _dummy_categories[0]
+    'category': _dummy_categories[0],
+    'cover': None
 }, {
     'title': 'Test Story 2',
     'flavour': 'This test story is chocolate flavoured.',
     'fulltext': _lorem_ipsum(3),
     'author': _dummy_users[0],
-    'category': _dummy_categories[0]
+    'category': _dummy_categories[0],
+    'cover': None
 }, {
     'title': 'Test Story 3',
     'flavour': 'This test story is strawberry flavoured.',
     'fulltext': _lorem_ipsum(3),
     'author': _dummy_users[1],
-    'category': _dummy_categories[1]
+    'category': _dummy_categories[1],
+    'cover': None
 }, {
     'title': None,
     'flavour': None,
     'fulltext': None,
     'author': None,
-    'category': None
+    'category': None,
+    'cover': None
 }, {
     'title': 'Mostly Empty',
     'flavour': 'This story is empty except for the title and the flavour text.',
     'fulltext': None,
     'author': None,
-    'category': None
+    'category': None,
+    'cover': None
 }, {
     'title': 'This test story has a very long title and some very long flavour text and was written by an author with '
              'a very long nickname and is part of a category which has a very long name in order to allow for more '
@@ -86,9 +140,7 @@ _stories = [{
     'flavour': _lorem_ipsum(1, as_html=False),
     'fulltext': _lorem_ipsum(20),
     'author': _dummy_users[3],
-    'category': _dummy_categories[3]
+    'category': _dummy_categories[3],
+    'cover': 'https://upload.wikimedia.org/wikipedia/en/7/7d/Bliss.png'
 }]
-
 _dummy_stories = [_create_dummy_story(story) for story in _stories]
-
-_go()

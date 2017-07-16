@@ -8,6 +8,7 @@ setup(
         'flask',
         'flask-sqlalchemy',
         'requests',
+        'SQLAlchemy-ImageAttach',
         'sqlalchemy-migrate'
     ]
 )
