@@ -6,10 +6,21 @@ from sqlalchemy_imageattach.context import store_context
 from flaskbook import db, image_store
 
 
+class Source(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    url = db.Column(db.String, unique=True, nullable=False)
+    timestamp = db.Column(db.DateTime, nullable=False)
+
+    def __repr__(self):
+        return '<Source: %r>' % self.url
+
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    source_id = db.Column(db.Integer, db.ForeignKey('source.id'), unique=True, nullable=False)
     nickname = db.Column(db.String, unique=True, nullable=False)
 
+    source = db.relationship('Source')
     avatar = entity.image_attachment('UserAvatar')
     albums = db.relationship('Album', back_populates='author')
     stories = db.relationship('Story', back_populates='author')
@@ -29,10 +40,12 @@ class User(db.Model):
 
 class Album(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    source_id = db.Column(db.Integer, db.ForeignKey('source.id'), unique=True, nullable=False)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     title = db.Column(db.String)
 
+    source = db.relationship('Source')
     author = db.relationship('User', back_populates='albums')
     category = db.relationship('Category', back_populates='albums')
     entries = db.relationship('AlbumEntry', back_populates='album', order_by='AlbumEntry.order')
@@ -78,12 +91,14 @@ class AlbumEntry(db.Model):
 
 class Story(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    source_id = db.Column(db.Integer, db.ForeignKey('source.id'), unique=True, nullable=False)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     title = db.Column(db.String)
     flavour_text = db.Column(db.String)
     fulltext_html = db.Column(db.String)
 
+    source = db.relationship('Source')
     cover = entity.image_attachment('StoryCover')
     author = db.relationship('User', back_populates='stories')
     category = db.relationship('Category', back_populates='stories')

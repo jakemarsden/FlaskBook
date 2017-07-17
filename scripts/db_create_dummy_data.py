@@ -1,4 +1,6 @@
 #!venv/bin/python
+import uuid
+from datetime import datetime
 from typing import Optional
 
 import lorem
@@ -6,7 +8,7 @@ from sqlalchemy.orm.properties import RelationshipProperty
 from sqlalchemy_imageattach.context import store_context
 
 from flaskbook import db, image_store
-from flaskbook.orm.models import Album, AlbumEntry, AlbumImage, Category, User, UserAvatar, Story, StoryCover
+from flaskbook.orm.models import Album, AlbumEntry, AlbumImage, Category, Source, Story, StoryCover, User, UserAvatar
 
 
 def _drop_all_data():
@@ -15,11 +17,17 @@ def _drop_all_data():
     AlbumEntry.query.delete()
     AlbumImage.query.delete()
     Category.query.delete()
-    User.query.delete()
-    UserAvatar.query.delete()
+    Source.query.delete()
     Story.query.delete()
     StoryCover.query.delete()
+    User.query.delete()
+    UserAvatar.query.delete()
     db.session.commit()
+
+
+def _create_dummy_source() -> Source:
+    return Source(url='https://www.example.com/%s' % str(uuid.uuid4()),
+                  timestamp=datetime.utcnow())
 
 
 def _create_dummy_category(template: dict) -> Category:
@@ -32,7 +40,8 @@ def _create_dummy_category(template: dict) -> Category:
 
 def _create_dummy_user(template: dict) -> User:
     print('Adding user: %r' % template)
-    user = User(nickname=template['name'])
+    user = User(source=_create_dummy_source(),
+                nickname=template['name'])
     with store_context(image_store):
         _set_image(template['avatar'], user.avatar)
         db.session.add(user)
@@ -42,7 +51,8 @@ def _create_dummy_user(template: dict) -> User:
 
 def _create_dummy_album(template: dict) -> Album:
     print('Adding album: %r' % template)
-    album = Album(title=template['title'],
+    album = Album(source=_create_dummy_source(),
+                  title=template['title'],
                   author=template['author'],
                   category=template['category'])
     with store_context(image_store):
@@ -58,7 +68,8 @@ def _create_dummy_album(template: dict) -> Album:
 
 def _create_dummy_story(template: dict) -> Story:
     print('Adding story: %r' % template)
-    story = Story(title=template['title'],
+    story = Story(source=_create_dummy_source(),
+                  title=template['title'],
                   flavour_text=template['flavour'],
                   fulltext_html=template['fulltext'],
                   author=template['author'],
